@@ -46,6 +46,28 @@
     </div>
 
     <script>
+        // Function to load the grammar.json file
+        async function loadGrammar() {
+            const response = await fetch('grammar.json');
+            const grammar = await response.json();
+            return grammar;
+        }
+
+        // Function to generate text using Tracery
+        function generateText(grammar) {
+            const traceryGrammar = tracery.createGrammar(grammar);
+            return traceryGrammar.flatten('#origin#');
+        }
+
+        // Event listener for mouse click
+        document.addEventListener('click', async () => {
+            const grammar = await loadGrammar();
+            const generatedText = generateText(grammar);
+            document.getElementById('output').innerText = generatedText;
+        });
+    </script>
+
+    <script>
         
         const birdSentences = [
             "A flock of bright canaries soared gracefully across the blue sky.",
@@ -59,7 +81,72 @@
             "A parrot squawked loudly, mimicking the chatter of the crowd.",
             "Tiny finches pecked at scattered seeds near the feeder.",
             "Bright macaws flapped their wings, painting the skies with color.",
-            "Seabirds skimmed the rolling waves, greeting the sunrise with cries."
+            "Seabirds skimmed the rolling waves, greeting the sunrise with cries.",
+            "The swan glided gracefully across the still pond, a vision of elegance.",
+            "A flock of geese honked in unison as they flew south for the winter.",
+            "The pelican dove into the water, emerging with a glimmering fish.",
+            "A crow cawed from the treetop, its dark form silhouetted against the sky.",
+            "The penguin waddled awkwardly across the icy landscape, its tuxedo gleaming.",
+            "A pair of lovebirds preened each other's feathers, chirping softly.",
+            "The falcon soared high above the cliffs, scanning the ground for movement.",
+            "A colorful toucan perched on a branch, its oversized beak a striking sight.",
+            "The vulture circled lazily in the sky, its keen eyes searching for carrion.",
+            "A flock of seagulls squabbled over a discarded sandwich on the beach.",
+            "The albatross rode the wind currents effortlessly, a master of the open sea.",
+            "A woodpecker hammered away at a tree trunk, searching for insects within.",
+            "The heron stood motionless in the shallows, waiting for a fish to swim by.",
+            "A flock of starlings performed intricate aerial dances at dusk, a mesmerizing sight.",
+            "The kingfisher dove into the water with a splash, emerging with a glinting fish.",
+            "A magpie collected shiny trinkets to decorate its nest, a hoarder of treasures.",
+            "The kestrel hovered in the air, its keen eyes locked on its prey below.",
+            "A flock of pigeons cooed softly in the city square, pecking at stray crumbs.",
+            "The ibis probed the mud for tasty morsels, its long bill a versatile tool.",
+            "A flock of crows gathered in the treetops, cawing loudly to one another.",
+            "The osprey circled above the water, its sharp talons poised for a",
+            "A flock of flamingos waded through the shallows, their pink plumage a vivid contrast.",
+            "The blackbird sang a melodious tune from its perch, filling the air with music.",
+            "A flock of swallows darted through the sky, catching insects on the wing.",
+            "The grebe dived beneath the surface, its sleek form disappearing into the depths.",
+            "A flock of sandpipers scurried along the shoreline, probing the sand for food.",
+            "The harrier glided low over the fields, its keen eyes searching for movement.",
+            "A flock of grosbeaks feasted on sunflower seeds, their beaks cracking the shells.",
+            "The warbler flitted through the branches, its bright plumage a flash of color.",
+            "A flock of waxwings descended on the berry bush, gobbling up the ripe fruit.",
+            "The curlew probed the mudflats with its long bill, searching for hidden prey.",
+            "A flock of swifts soared through the sky, their scythe-shaped wings slicing the air.",
+            "The avocet waded through the shallows, its upturned bill sifting the mud for food.",
+            "A flock of lapwings tumbled through the air, their acrobatic flight a joy to behold.",
+            "The godwit probed the sand with its long bill, searching for buried clams.",
+            "A flock of buntings flitted through the bushes, their cheerful song filling the air.",
+            "The curlew probed the mudflats with its long bill, searching for hidden prey.",
+            "A flock of swifts soared through the sky, their scythe-shaped wings slicing the air.",
+            "The avocet waded through the shallows, its upturned bill sifting the mud for food.",
+            "A flock of lapwings tumbled through the air, their acrobatic flight a joy to behold.",
+            "The godwit probed the sand with its long bill, searching for buried clams.",
+            "A flock of buntings flitted through the bushes, their cheerful song filling the air.",
+            "The curlew probed the mudflats with its long bill, searching for hidden prey.",
+            "A flock of swifts soared through the sky, their scythe-shaped wings slicing the air.",
+            "The avocet waded through the shallows, its upturned bill sifting the mud for food.",
+            "A flock of lapwings tumbled through the air, their acrobatic flight a joy to behold.",
+            "The godwit probed the sand with its long bill, searching for buried clams.",
+            "A flock of buntings flitted through the bushes, their cheerful song filling the air.",
+            "The curlew probed the mudflats with its long bill, searching for hidden prey.",
+            "A flock of swifts soared through the sky, their scythe-shaped wings slicing the air.",
+            "The avocet waded through the shallows, its upturned bill sifting the mud for food.",
+            "A flock of lapwings tumbled through the air, their acrobatic flight a joy to behold.",
+            "The godwit probed the sand with its long bill, searching for buried clams.",
+            "One day, the little bird flew away from the nest and never returned.",
+            "The bird's song was a melody that echoed through the forest, bringing joy to all who heard it.",
+            "The bird's feathers were a brilliant shade of blue, shimmering in the sunlight.",
+            "The bird soared high above the clouds, its wings outstretched as it rode the wind.",
+            "The bird's nest was a cozy little home, nestled in the branches of a tall tree.",
+            "New feathers grew in place of the old, each one a vibrant hue of red, blue, or green.",
+            "The bird's beak was sharp and strong, perfect for catching insects and small fish.",
+            "The bird's call was a sweet trill that filled the air with music.",
+            "The bird's eyes were bright and curious, taking in the world with wonder and delight.",
+            "The bird's wings were a marvel of engineering, allowing it to soar through the sky with ease.",
+            "The bird's song was a symphony of chirps, whistles, and trills that echoed through the forest.",
+            "The bird's feathers were soft and warm, providing protection from the cold winter winds."
         ];
 
         let sentences = []; // Array to store active sentences with their properties

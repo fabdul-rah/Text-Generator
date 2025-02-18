@@ -1,6 +1,6 @@
 {
     "origin": [
-      "#noun.Tops# #verb.cognition# #noun.object#."
+      "#noun.Tops# #verb.social# #noun.animal# in the #noun.location# during the #noun.time#. The #adj.all# #noun.animal# often #verb.cognition# its #noun.object# when #verb.social# with other #noun.group#. #verb.communication# can be heard from #noun.location#."
     ],
     "adj.all": [
       "easier",
