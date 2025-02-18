@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Interactive Bird Sentences - Enhanced</title>
+    <!-- p5.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.4.2/lib/p5.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Roboto', sans-serif;
+        }
+        .info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            transition: all 0.3s ease;
+        }
+        .info p {
+            margin: 0;
+            color: #333;
+            font-size: 16px;
+        }
+        .info:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .info p:first-child {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="info">
+        <p>Click anywhere in the canvas to generate a random bird-related sentence.</p>
+        <p>The sentence will fall down, bounce, and fade out as color-shifting birds fly around!</p>
+    </div>
+
+    <script>
+        
+        const birdSentences = [
+            "A flock of bright canaries soared gracefully across the blue sky.",
+            "The raven perched on the fence, quietly observing.",
+            "A small sparrow hopped between branches, chirping cheerfully.",
+            "A majestic eagle glided above the mountains in search of prey.",
+            "The proud peacock displayed its vibrant feathers in the garden.",
+            "A hummingbird hovered, sipping nectar from scarlet blossoms.",
+            "Storks waded through the marsh, hunting for their next meal.",
+            "The owl hooted softly under the silver moonlight.",
+            "A parrot squawked loudly, mimicking the chatter of the crowd.",
+            "Tiny finches pecked at scattered seeds near the feeder.",
+            "Bright macaws flapped their wings, painting the skies with color.",
+            "Seabirds skimmed the rolling waves, greeting the sunrise with cries."
+        ];
+
+        let sentences = []; // Array to store active sentences with their properties
+        let birds = [];
+        const BIRD_COUNT = 15;
+
+        let bgColorStart, bgColorEnd, bgColorLerp;
+
+        function setup() {
+            createCanvas(windowWidth, windowHeight);
+            textAlign(CENTER, CENTER);
+            bgColorStart = generateWebSafeColor();
+            bgColorEnd = generateWebSafeColor();
+            bgColorLerp = 0;
+
+            for (let i = 0; i < BIRD_COUNT; i++) {
+                birds.push({
+                    x: random(width),
+                    y: random(height),
+                    size: random(20, 60),
+                    speed: random(0.5, 2),
+                    colorHue: random(360),
+                    offset: random(1000),
+                });
+            }
+        }
+
+        function draw() {
+            // Gradually change the background color
+            bgColorLerp += 0.001;
+            let bgColor = lerpColor(bgColorStart, bgColorEnd, bgColorLerp);
+            background(bgColor);
+
+            // Draw and animate birds
+            drawBirds();
+
+            // Update and draw active sentences
+            for (let i = sentences.length - 1; i >= 0; i--) {
+                let sentence = sentences[i];
+                push();
+                fill(30, 30, 30, sentence.alpha);
+                textSize(sentence.fontSize);
+
+                // Make the text fall
+                sentence.yPos += sentence.fallSpeed;
+
+                // Add bounce effect
+                if (sentence.yPos > height / 2) {
+                    sentence.fallSpeed = -2;
+                    sentence.bounceSpeed += 0.2;
+                }
+
+                // Bounce the text and gradually fade out
+                if (sentence.bounceSpeed > 0) {
+                    sentence.yPos -= sentence.bounceSpeed;
+                    sentence.bounceSpeed -= 0.2;
+                }
+
+                // Draw the sentence at the new position
+                text(sentence.text, sentence.xPos, sentence.yPos);
+
+                // Fade out the text
+                sentence.alpha -= 1.8;
+                if (sentence.alpha <= 0) {
+                    sentences.splice(i, 1); // Remove sentence when fully faded
+                }
+
+                pop();
+            }
+        }
+
+        function drawBirds() {
+            colorMode(HSB, 360, 100, 100, 100);
+            noStroke();
+
+            for (let i = 0; i < birds.length; i++) {
+                let b = birds[i];
+
+                b.x += sin(frameCount * 0.01 + b.offset) * b.speed;
+                b.y += cos(frameCount * 0.01 + b.offset) * b.speed;
+
+                if (b.x > width + b.size) b.x = -b.size;
+                if (b.x < -b.size) b.x = width + b.size;
+                if (b.y > height + b.size) b.y = -b.size;
+                if (b.y < -b.size) b.y = height + b.size;
+
+                b.colorHue = (b.colorHue + 0.5) % 360;
+                fill(b.colorHue, 80, 80, 80);
+
+                push();
+                translate(b.x, b.y);
+                rotate(sin(frameCount * 0.02 + b.offset) * 0.5);
+                arc(0, 0, b.size, b.size / 2, PI, TWO_PI);
+                arc(b.size * 0.4, 0, b.size, b.size / 2, PI, TWO_PI);
+                pop();
+            }
+            colorMode(RGB);
+        }
+
+        function generateWebSafeColor() {
+            // Generate random values for red, green, blue with web-safe values
+            const webSafeColors = ['00', '33', '66', '99', 'CC', 'FF'];
+            const red = random(webSafeColors);
+            const green = random(webSafeColors);
+            const blue = random(webSafeColors);
+
+            return color(`#${red}${green}${blue}`);
+        }
+
+        function mousePressed() {
+            let sentenceText = random(birdSentences);
+            let newSentence = {
+                text: sentenceText,
+                xPos: mouseX,
+                yPos: mouseY,
+                alpha: 255,
+                fallSpeed: 2,
+                bounceSpeed: 0,
+                fontSize: 36
+            };
+
+            // Add new sentence to the array
+            sentences.push(newSentence);
+
+            // Change background colors when the sentence is clicked
+            bgColorStart = bgColorEnd;
+            bgColorEnd = generateWebSafeColor();
+            bgColorLerp = 0;
+        }
+
+        function windowResized() {
+            resizeCanvas(windowWidth, windowHeight);
+        }
+    </script>
+</body>
+</html>
