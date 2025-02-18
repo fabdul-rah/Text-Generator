@@ -36,6 +36,55 @@
         .info p:first-child {
             font-weight: bold;
         }
+
+        /* New style for the credits section */
+        .credits-section {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            text-align: center;
+            font-size: 14px;
+            color: #333;
+            display: none;
+        }
+
+        .credits-section h3 {
+            margin: 0 0 10px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .credits-section a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .credits-section a:hover {
+            text-decoration: underline;
+        }
+
+        .credits-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .credits-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 
@@ -44,6 +93,17 @@
         <p>Click anywhere in the canvas to generate a random bird-related sentence.</p>
         <p>The sentence will fall down, bounce, and fade out as color-shifting birds fly around!</p>
     </div>
+
+    <!-- Credits Section -->
+    <div class="credits-section" id="credits-section">
+        <h3>Credits</h3>
+        <p>This website was created by <strong>Feraidon AbdulRahimzai</strong> and is based on the <a href="https://p5js.org/" target="_blank">p5.js</a> library.</p>
+        <p>The bird sentences are randomly generated and inspired by the free access Gutenberg Book: <a href="https://www.gutenberg.org/cache/epub/30000/pg30000.txt" target="_blank">The Bird Book</a>.</p>
+        <p>Colorful birds and interactive elements create a fun, engaging experience. Thank you for visiting!</p>
+    </div>
+
+    <!-- Credits Button -->
+    <button class="credits-button" onclick="toggleCredits()">Show Credits</button>
 
     <script>
         // Function to load the grammar.json file
@@ -65,10 +125,18 @@
             const generatedText = generateText(grammar);
             document.getElementById('output').innerText = generatedText;
         });
+
+        function toggleCredits() {
+            const creditsSection = document.getElementById('credits-section');
+            if (creditsSection.style.display === 'none' || creditsSection.style.display === '') {
+                creditsSection.style.display = 'block';
+            } else {
+                creditsSection.style.display = 'none';
+            }
+        }
     </script>
 
     <script>
-        
         const birdSentences = [
             "A flock of bright canaries soared gracefully across the blue sky.",
             "The raven perched on the fence, quietly observing.",
@@ -112,12 +180,6 @@
             "A flock of grosbeaks feasted on sunflower seeds, their beaks cracking the shells.",
             "The warbler flitted through the branches, its bright plumage a flash of color.",
             "A flock of waxwings descended on the berry bush, gobbling up the ripe fruit.",
-            "The curlew probed the mudflats with its long bill, searching for hidden prey.",
-            "A flock of swifts soared through the sky, their scythe-shaped wings slicing the air.",
-            "The avocet waded through the shallows, its upturned bill sifting the mud for food.",
-            "A flock of lapwings tumbled through the air, their acrobatic flight a joy to behold.",
-            "The godwit probed the sand with its long bill, searching for buried clams.",
-            "A flock of buntings flitted through the bushes, their cheerful song filling the air.",
             "The curlew probed the mudflats with its long bill, searching for hidden prey.",
             "A flock of swifts soared through the sky, their scythe-shaped wings slicing the air.",
             "The avocet waded through the shallows, its upturned bill sifting the mud for food.",
